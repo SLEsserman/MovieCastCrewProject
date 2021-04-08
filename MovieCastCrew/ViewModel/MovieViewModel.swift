@@ -7,11 +7,17 @@
 
 import Foundation
 
+enum MovieNumber {
+    case one
+    case two
+}
+
 class MovieViewModel: ObservableObject {
-    @Published var movies = [MovieListViewModel]()
+    @Published var moviesOne = [MovieListViewModel]()
+    @Published var moviesTwo = [MovieListViewModel]()
     let movieService = MovieService()
     
-    func searchByName(_ name: String) {
+    func searchByName(_ name: String, number: MovieNumber) {
         if name.isEmpty {
             return
         }
@@ -20,7 +26,12 @@ class MovieViewModel: ObservableObject {
             case .success(let result):
                 if let result = result {
                     DispatchQueue.main.async {
-                        self.movies = result.map(MovieListViewModel.init)
+                        switch number {
+                        case .one:
+                            self.moviesOne = result.map(MovieListViewModel.init)
+                        case .two:
+                            self.moviesTwo = result.map(MovieListViewModel.init)
+                        }
                     }
                 }
             case .failure(let error):

@@ -9,11 +9,25 @@ import SwiftUI
 import URLImage
 
 struct MovieListView: View {
-    let movies: [MovieListViewModel]
-
+    let moviesOne: [MovieListViewModel]
+    let moviesTwo: [MovieListViewModel]
+    
     var body: some View {
-        List(self.movies, id: \.imdbId) { movie in
-            MovieCell(movie: movie)
+        ScrollView {
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(self.moviesOne, id: \.imdbId) { movie in
+                        MovieCell(movie: movie)
+                    }
+                }
+            }
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(self.moviesTwo, id: \.imdbId) { movie in
+                        MovieCell(movie: movie)
+                    }
+                }
+            }
         }
     }
 }
@@ -22,11 +36,11 @@ struct MovieCell: View {
     let movie: MovieListViewModel
     
     var body: some View {
-        HStack(alignment: .top) {
+        VStack(alignment: .leading) {
             URLImage(url: URL(string: movie.poster)!, content: {image in
-               image
-                .frame(width: 100, height: 120)
-                .cornerRadius(6)
+                image
+                    .frame(width: 100, height: 120)
+                    .cornerRadius(6)
             })
             VStack(alignment: .leading) {
                 Text(movie.title)
@@ -37,5 +51,6 @@ struct MovieCell: View {
             }.padding(5)
             Spacer()
         }.contentShape(Rectangle())
+        .frame(maxWidth: 300)
     }
 }

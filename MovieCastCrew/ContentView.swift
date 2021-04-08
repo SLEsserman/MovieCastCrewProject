@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct MovieScreen: View {
-    @ObservedObject private var movieViewModel = MovieViewModel()
-    @State private var movieNameSearch: String = ""
+    @ObservedObject private var movieViewModel  = MovieViewModel()
+    @State private var movieNameOne: String     = ""
+    @State private var movieNameTwo: String     = ""
     
     var body: some View {
         VStack {
-            TextField("Search", text: $movieNameSearch, onEditingChanged: { _ in }, onCommit: {
-                self.movieViewModel.searchByName(self.movieNameSearch)
-            }).textFieldStyle(RoundedBorderTextFieldStyle())
+            HStack {
+                TextField("Search", text: $movieNameOne, onEditingChanged: { _ in }, onCommit: {
+                    self.movieViewModel.searchByName(self.movieNameOne, number: .one)
+                }).textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                TextField("Search", text: $movieNameTwo, onEditingChanged: { _ in }, onCommit: {
+                    self.movieViewModel.searchByName(self.movieNameTwo, number: .two)
+                }).textFieldStyle(RoundedBorderTextFieldStyle())
+            }
             Spacer()
                 .navigationTitle("Movies")
-                MovieListView(movies: self.movieViewModel.movies)
-            
+            MovieListView(moviesOne: self.movieViewModel.moviesOne, moviesTwo: self.movieViewModel.moviesTwo)
         }.padding()
     }
 }
