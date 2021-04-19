@@ -13,20 +13,24 @@ struct MovieScreen: View {
     @State private var movieNameTwo: String     = ""
     
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Search", text: $movieNameOne, onEditingChanged: { _ in }, onCommit: {
-                    self.movieViewModel.searchByName(self.movieNameOne, number: .one)
-                }).textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                TextField("Search", text: $movieNameTwo, onEditingChanged: { _ in }, onCommit: {
-                    self.movieViewModel.searchByName(self.movieNameTwo, number: .two)
-                }).textFieldStyle(RoundedBorderTextFieldStyle())
+        HStack {
+            GeometryReader { geo in
+                VStack {
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.blue)
+                        VStack {
+                            Text("Type The Movie You Want To Search")
+                            TextField("Search", text: $movieNameOne, onEditingChanged: { _ in }, onCommit: {
+                                self.movieViewModel.searchByName(self.movieNameOne, number: .one)
+                            }).textFieldStyle(RoundedBorderTextFieldStyle())
+                        }
+                    }.cornerRadius(16.0)
+                }.frame(maxWidth: geo.size.width / 2, maxHeight: .infinity)
+                .padding(.top, 0)
+                .padding(.bottom, 50)
             }
-            Spacer()
-                .navigationTitle("Movies")
-            MovieListView(moviesOne: self.movieViewModel.moviesOne, moviesTwo: self.movieViewModel.moviesTwo)
-        }.padding()
+        }
     }
 }
 
