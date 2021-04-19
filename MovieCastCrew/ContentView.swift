@@ -17,13 +17,17 @@ struct MovieScreen: View {
             GeometryReader { geo in
                 VStack {
                     ZStack {
-                        Rectangle()
-                            .fill(Color.blue)
-                        VStack {
-                            Text("Type The Movie You Want To Search")
-                            TextField("Search", text: $movieNameOne, onEditingChanged: { _ in }, onCommit: {
-                                self.movieViewModel.searchByName(self.movieNameOne, number: .one)
-                            }).textFieldStyle(RoundedBorderTextFieldStyle())
+                        if movieViewModel.moviesOne.isEmpty {
+                            Rectangle()
+                                .fill(Color.blue)
+                            VStack {
+                                Text("Type The Movie You Want To Search")
+                                TextField("Search", text: $movieNameOne, onEditingChanged: { _ in }, onCommit: {
+                                    self.movieViewModel.searchByName(self.movieNameOne, number: .one)
+                                }).textFieldStyle(RoundedBorderTextFieldStyle())
+                            }
+                        } else {
+                            MovieListView(movies: movieViewModel.moviesOne)
                         }
                     }.cornerRadius(16.0)
                 }.frame(maxWidth: geo.size.width / 2, maxHeight: .infinity)
