@@ -7,17 +7,19 @@
 
 import Foundation
 
-enum MovieNumber {
-    case one
-    case two
-}
-
 class MovieViewModel: ObservableObject {
-    @Published var moviesOne = [MovieListViewModel]()
-    @Published var moviesTwo = [MovieListViewModel]()
+    
+    enum State {
+        case initial
+        case loading
+        case list(movies: [MovieListViewModel])
+        case selection(movie: MovieListViewModel)
+    }
+    
+    @Published var state: State = .initial
     let movieService = MovieService()
     
-    func searchByName(_ name: String, number: MovieNumber) {
+    func searchByName(_ name: String) {
         if name.isEmpty {
             return
         }
@@ -26,12 +28,7 @@ class MovieViewModel: ObservableObject {
             case .success(let result):
                 if let result = result {
                     DispatchQueue.main.async {
-                        switch number {
-                        case .one:
-                            self.moviesOne = result.map(MovieListViewModel.init)
-                        case .two:
-                            self.moviesTwo = result.map(MovieListViewModel.init)
-                        }
+                        self.state = .list(movies: result.map(MovieListViewModel.init))
                     }
                 }
             case .failure(let error):
@@ -43,6 +40,9 @@ class MovieViewModel: ObservableObject {
         }
     }
     
+    func onSelectedMovie(movie: MovieListViewModel) {
+        state = .selection(movie: movie)
+    }
 }
 
 struct MovieListViewModel {
