@@ -10,12 +10,19 @@ import SwiftUI
 struct MovieScreen: View {
     
     var body: some View {
-        HStack {
+        VStack {
             GeometryReader { geo in
-                MovieCardView()
-                    .frame(maxWidth: geo.size.width / 2, maxHeight: .infinity)
-                    .padding(.top, 0)
-                    .padding(.bottom, 50)
+                HStack {
+                    MovieCardView(color: .blue)
+                        .frame(maxWidth: geo.size.width / 2, maxHeight: .infinity)
+                        .padding(.top, 0)
+                        .padding(.bottom, 50)
+                    Spacer()
+                    MovieCardView(color: .orange)
+                        .frame(maxWidth: geo.size.width / 2, maxHeight: .infinity)
+                        .padding(.top, 0)
+                        .padding(.bottom, 50)
+                }
             }
         }
     }
