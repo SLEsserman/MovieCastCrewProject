@@ -16,8 +16,17 @@ class MovieViewModel: ObservableObject {
         case selection(movie: MovieListViewModel)
     }
     
-    @Published var state: State = .initial
+    @Published var state: State = .initial {
+        didSet {
+            onStateChange()
+        }
+    }
     let movieService = MovieService()
+    private let onStateChange: () -> ()
+    
+    init(onStateChange: @escaping () -> Void) {
+        self.onStateChange = onStateChange
+    }
     
     func searchByName(_ name: String) {
         if name.isEmpty {

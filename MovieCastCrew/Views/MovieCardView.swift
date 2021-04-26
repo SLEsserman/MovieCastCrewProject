@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct MovieCardView: View {
-    @ObservedObject private var movieViewModel  = MovieViewModel()
-    @State private var movieNameOne: String     = ""
-    @State private var movieNameTwo: String     = ""
+    @ObservedObject private var movieViewModel: MovieViewModel
+    @State private var movieNameOne: String = ""
     @State private var frame: CGRect = .zero
-    
+
     let color: Color
+
+    init(viewModel: MovieViewModel, color: Color) {
+        self.movieViewModel = viewModel
+        self.color = color
+    }
 
     var body: some View {
         GeometryReader { geo in
